@@ -9,6 +9,7 @@ public class ParaMain {
   {
     DataAccess da = new DataAccess();
     da.createFilePathTable(dbName);
+    da.createIndicatorTable(dbName);
   }
 
   public static void fillFilePathTable(String dbName, String dir) throws Exception
@@ -28,6 +29,11 @@ public class ParaMain {
 
   }
 
+  public static void runScan(String dbName){
+    ParaScanner ps = new ParaScanner();
+    ps.getIndicators(dbName);
+  }
+
 //main**********************************************************************//
   public static void main( String args[] ) throws Exception{
 
@@ -35,6 +41,7 @@ public class ParaMain {
     makeFilePathTable(args[0]);
     fillFilePathTable(args[0], args[1]);
     createFileViews(args[0]);
+    runScan(args[0]);
     System.out.println("end main");
 
   }//end main**************************************************************//

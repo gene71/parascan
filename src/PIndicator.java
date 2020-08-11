@@ -1,7 +1,8 @@
 public class PIndicator{
   public int id;
-  public String pattern;
-  public String patternType;
-  public String filePath;
-  public int lineNumer;
+  public int npatternid;
+  public int cepid;
+  public int filePathsid;
+  public int lineNumber;
+  public String line;
 }

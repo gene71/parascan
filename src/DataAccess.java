@@ -16,17 +16,19 @@ public class DataAccess{
       }
       System.out.println("Opened database successfully");
   }//end createDatabase()
-  public void createNewTable(String dbName){
+
+  public void createIndicatorTable(String dbName){
          // SQLite connection string
          String url = conString;
 
          // SQL statement for creating a new table
-         String sql = "CREATE TABLE IF NOT EXISTS indicators (\n"
-                 + "	id integer PRIMARY KEY,\n"
-                 + "	pattern text NOT NULL,\n"
-                 + "	patternType text NOT NULL,\n"
-                 + "	lineNumer integer NOT NULL,\n"
-                 + "	filePath text NOT NULL\n"
+         String sql = "CREATE TABLE IF NOT EXISTS indicators ("
+                 + "	id integer PRIMARY KEY,"
+                 + "	npatternId integer NOT NULL,"
+                 + "	cepId integer NOT NULL,"
+                 + "	filePathsId integer NOT NULL,"
+                 + "	lineNumer integer NOT NULL,"
+                 + "	line text NOT NULL"
                  + ");";
 
          try (Connection conn = DriverManager.getConnection(url + dbName);
@@ -36,7 +38,7 @@ public class DataAccess{
          } catch (SQLException e) {
              System.out.println(e.getMessage());
          }
-    }//end createNewTable
+    }//end createIndicatorTable
 
     public void createFilePathTable(String dbName){
            // SQLite connection string
@@ -203,32 +205,71 @@ public class DataAccess{
 
     }//end createConfigFilesView
 
+    public void deleteIndicators(String dbName){
 
-
-
-
-
-
-
-
-    public void insertIndicator(PIndicator pi, String dbName){
       // SQLite connection string
       String url = conString;
       // SQL statement for creating a new table
-      String sql = "INSERT into indicators (id, pattern, patternType,\n"
-      + " lineNumer, filePath) VALUES (" + pi.id + ", '"
-      + pi.pattern + "', '" + pi.patternType + "', " + pi.lineNumer
-      + ", '" + pi.filePath + "');";
+      String sql = "DELETE FROM indicators;";
+
 
       try (Connection conn = DriverManager.getConnection(url + dbName);
-              Statement stmt = conn.createStatement()) {
-          // create a new table
+          Statement stmt = conn.createStatement()) {
           stmt.execute(sql);
       } catch (SQLException e) {
         System.out.println(sql);
 
           System.out.println(e.getMessage());
       }
+    }//end deleteIndicators
+
+    
+    public void insertIndicator(PIndicator pi, String dbName){
+      // SQLite connection string
+      String url = conString;
+      // SQL statement for creating a new table
+      String sql = "INSERT into indicators (id, npatternid, cepid, filePathsid, lineNumer, line)"
+      + " VALUES ("+ pi.id + ", "
+      + pi.npatternid + ", " + pi.cepid + ", " + pi.filePathsid
+      + ", " + pi.lineNumber + ", '" + pi.line + "');";
+
+      try (Connection conn = DriverManager.getConnection(url + dbName);
+          Statement stmt = conn.createStatement()) {
+          stmt.execute(sql);
+      } catch (SQLException e) {
+        System.out.println(sql);
+
+          System.out.println(e.getMessage());
+      }
+    }//end insertIndicator
+
+    public int getNPatternId(String npattern, String dbName){
+      // SQLite connection string
+      String url = conString;
+      int id = 0;
+
+      // SQL statement for creating a new table
+      String sql = "SELECT id FROM npatterns WHERE pattern = '" + npattern + "';";
+
+      try (Connection conn = DriverManager.getConnection(url + dbName);
+              Statement stmt = conn.createStatement()) {
+
+          // execute querry
+          ResultSet rs    = stmt.executeQuery(sql);
+
+          // loop through the result set
+          while (rs.next()) {
+
+            id = rs.getInt("id");
+
+
+          }//end while
+
+
+      } catch (SQLException e) {
+          System.out.println("problem getting npattern id " + e.getMessage());
+      }//end try v_cfiles
+      return id;
     }
 
 }//end DataAccess
