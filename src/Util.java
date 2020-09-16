@@ -1,3 +1,8 @@
+package parascan10;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Util{
   public void showFilesR(String path) throws Exception{
     FileFinder ff = new FileFinder();
@@ -24,5 +29,24 @@ public class Util{
     }//end for loop
 
   }
+
+  public int getLineCount(String filePath){
+
+    BufferedReader reader;
+    int i = 1;
+		try {
+			reader = new BufferedReader(new FileReader(filePath));
+			String line = reader.readLine();
+			while (line != null) {
+					line = reader.readLine();
+          i++;
+			}//end while
+			reader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+    return i;
+  }//end getLineCount
 
 }//end Util

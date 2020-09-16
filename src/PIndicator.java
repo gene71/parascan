@@ -1,3 +1,4 @@
+package parascan10;
 public class PIndicator{
   public int id;
   public int npatternid;

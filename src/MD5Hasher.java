@@ -1,5 +1,8 @@
+package parascan10;
+
 import java.io.*;
 import java.security.MessageDigest;
+
 public class MD5Hasher {
 
     public static byte[] createChecksum(String filename) throws Exception {

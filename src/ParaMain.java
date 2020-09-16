@@ -1,3 +1,4 @@
+package parascan10;
 public class ParaMain {
 
   public static void makeDatabaseFile(String dbName)
@@ -10,12 +11,16 @@ public class ParaMain {
     DataAccess da = new DataAccess();
     da.createFilePathTable(dbName);
     da.createIndicatorTable(dbName);
+    da.createFileLineCountsTable(dbName);
+
   }
 
   public static void fillFilePathTable(String dbName, String dir) throws Exception
   {
     Util u = new Util();
     u.getFiles(dbName, dir);
+    DataAccess da = new DataAccess();
+    da.loadFileLineCount(dbName, da.getFilePaths(dbName));
   }
 
   public static void createFileViews(String dbName){
